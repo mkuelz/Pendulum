@@ -1,0 +1,60 @@
+body {
+  background-color: aliceblue;
+}
+svg {
+  border: black;
+  border-style: solid;
+  border-width: 2px;
+  margin: auto;
+}
+h1 {
+  text-align: center;
+}
+.col-6 {
+  min-width: 500px;
+}
+.slider {
+  border: none;
+}
+#canvas {
+  cursor: pointer;
+}
+
+g > line {
+  opacity: 0.7;
+}
+
+g[transform="translate(0,250.5)"] > line {
+  stroke-width: 3px;
+}
+g[transform="translate(250.5,0)"] > line {
+  stroke-width: 3px;
+}
+
+g > text {
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.track,
+.track-inset,
+.track-overlay {
+  stroke-linecap: round;
+}
+
+.track {
+  stroke: #000;
+  stroke-opacity: 0.3;
+  stroke-width: 10px;
+}
+.track-inset {
+  stroke: #ddd;
+  stroke-width: 8px;
+}
+.handle {
+  fill: #fff;
+  stroke: #000;
+  stroke-opacity: 0.5;
+  stroke-width: 1.25px;
+  cursor: grab;
+}
