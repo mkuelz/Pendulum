@@ -1,6 +1,6 @@
 var width = 500, height = 500;
-var lines = {l1: 90, l2: 90};
-var bobs = {m1: 15, m2: 15};
+var lines = { l1: 90, l2: 90 };
+var bobs = { m1: 15, m2: 15 };
 var x0 = width / 2;
 var y0 = height / 2;
 var x1 = x0;
@@ -73,10 +73,7 @@ d3.select("#grid").append('div').attr("id", "angle2");
 var drag_Circle1 = d3.drag()
     .on("drag", function (d) {
         dragging = true;
-
-        let angle = Math.atan2(d3.event.x - x0, d3.event.y - y0);
-        Theta1 = angle;
-
+        Theta1 = Math.atan2(d3.event.x - x0, d3.event.y - y0);;
         setAttributes();
     })
     .on("end", function () {
@@ -85,10 +82,7 @@ var drag_Circle1 = d3.drag()
 var drag_Circle2 = d3.drag()
     .on("drag", function (d) {
         dragging = true;
-
-        let angle = Math.atan2(d3.event.x - x1, d3.event.y - y1);
-        Theta2 = angle;
-
+        Theta2 = Math.atan2(d3.event.x - x1, d3.event.y - y1);
         setAttributes();
     })
     .on("end", function () {
@@ -148,7 +142,7 @@ function getSlider(range, type, line, title) {
             })
         )
         .attr("cx", function () {
-           return type == 'line' ? x(lines[line]) : x(bobs[line]);
+            return type == 'line' ? x(lines[line]) : x(bobs[line]);
         });
     return slider_div.node();
 }
@@ -191,8 +185,11 @@ function setAttributes() {
     y1 = y0 + lines.l1 * Math.cos(Theta1)
     x2 = x1 + lines.l2 * Math.sin(Theta2)
     y2 = y1 + lines.l2 * Math.cos(Theta2)
+
     dTheta1 = 0;
     dTheta2 = 0;
+    Theta1 = Math.atan2(x1 - x0, y1 - y0);
+    Theta2 = Math.atan2(x2 - x1, y2 - y1);
 
     d3.select("#angle1").text('Angle 1: ' + (Math.atan2(x1 - x0, y1 - y0) * 180 / Math.PI).toFixed(5));
     d3.select("#angle2").text('Angle 2: ' + (Math.atan2(x2 - x1, y2 - y1) * 180 / Math.PI).toFixed(5));
@@ -220,5 +217,7 @@ d3.select('#slider').node().appendChild(getSlider([10, 150], 'line', 'l2', 'Leng
 d3.select('#slider').node().appendChild(getSlider([10, 30], 'bobs', 'm1', 'Bob 1 Mass'));
 d3.select('#slider').node().appendChild(getSlider([10, 30], 'bobs', 'm2', 'Bob 2 Mass'));
 
-
-setInterval(function () { if (!dragging) { draw() } }, 15);
+setInterval(function () {
+    if (!dragging) {
+        draw()
+    }}, 15);
