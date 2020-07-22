@@ -1,6 +1,7 @@
 body {
   background-color: aliceblue;
 }
+
 svg {
   border: black;
   border-style: solid;
@@ -16,7 +17,7 @@ h1 {
 .slider {
   border: none;
 }
-#canvas {
+#grid {
   cursor: pointer;
 }
 

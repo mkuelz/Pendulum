@@ -162,8 +162,8 @@ function draw() {
     d2Theta2 = (mu * g * (Math.sin(Theta1) * Math.cos(Theta1 - Theta2) - Math.sin(Theta2)) + (mu * lines.l1 * dTheta1 * dTheta1 + lines.l2 * dTheta2 * dTheta2 * Math.cos(Theta1 - Theta2)) * Math.sin(Theta1 - Theta2)) / (lines.l2 * (mu - Math.cos(Theta1 - Theta2) * Math.cos(Theta1 - Theta2)));
     dTheta1 += d2Theta1 * time;
     dTheta2 += d2Theta2 * time;
-    Theta1 += dTheta1 * time * .999;
-    Theta2 += dTheta2 * time * .999;
+    Theta1 += dTheta1 * time;
+    Theta2 += dTheta2 * time;
 
     x1 = x0 + lines.l1 * Math.sin(Theta1);
     y1 = y0 + lines.l1 * Math.cos(Theta1);
