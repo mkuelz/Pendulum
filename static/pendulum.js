@@ -148,7 +148,8 @@ function getSlider(range, type, line, title) {
             })
         )
         .attr("cx", function () {
-            type === 'line' ? x(lines[line]) : x(bobs[line]);
+           return type == 'line' ? x(lines[line]) : x(bobs[line]);
+            
         });
     return slider_div.node();
 }
