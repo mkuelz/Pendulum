@@ -215,10 +215,10 @@ function setAttributes() {
     d3.select('#circle2').attr('r', bobs.m2);
 }
 
-d3.select('#sliders').node().appendChild(getSlider([10, 150], 'line', 'l1', 'Length 1'));
-d3.select('#sliders').node().appendChild(getSlider([10, 150], 'line', 'l2', 'Length 2'));
-d3.select('#sliders').node().appendChild(getSlider([10, 30], 'bobs', 'm1', 'Bob 1 Mass'));
-d3.select('#sliders').node().appendChild(getSlider([10, 30], 'bobs', 'm2', 'Bob 2 Mass'));
+d3.select('#slider').node().appendChild(getSlider([10, 150], 'line', 'l1', 'Length 1'));
+d3.select('#slider').node().appendChild(getSlider([10, 150], 'line', 'l2', 'Length 2'));
+d3.select('#slider').node().appendChild(getSlider([10, 30], 'bobs', 'm1', 'Bob 1 Mass'));
+d3.select('#slider').node().appendChild(getSlider([10, 30], 'bobs', 'm2', 'Bob 2 Mass'));
 
 
 setInterval(function () { if (!dragging) { draw() } }, 15);
