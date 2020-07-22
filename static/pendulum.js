@@ -17,18 +17,13 @@ var dragging = false;
 
 var svg = d3.select("#canvas").append("svg").attr('width', width).attr('height', height).on('click', function () { dragging = !dragging })
 
-function rotate(x, y, OriginX, OriginY) {
-    var angle = Math.atan2(x - OriginX,  y - OriginY)
-    return angle
-};
-
 const lineFunction = d3.line()
     .x(function (d) { return d.x; })
     .y(function (d) { return d.y; })
 
 svg.append('g')
     .call(d3.axisBottom(d3.scaleLinear().range([0, height])).tickSize(-500))
-    .attr("transform", "translate(0,"+width+")")
+    .attr("transform", "translate(0," + width + ")")
     .selectAll("text").remove()
 svg.append('g')
     .call(d3.axisLeft(d3.scaleLinear().range([0, width])).tickSize(-500))
@@ -44,6 +39,7 @@ var line_1 = svg.append('path')
 var line_2 = svg.append('path')
     .attr('stroke', 'black')
     .attr('stroke-width', 2)
+    .attr('id', "line2")
     .attr('d', lineFunction([{ 'x': x1, 'y': y1 }, { 'x': x2, 'y': y2 }]))
 
 var circle_1 = svg.append('g')
@@ -76,46 +72,25 @@ d3.select("#canvas").append('div').attr("id", "angle2")
 var drag_Circle1 = d3.drag()
     .on("drag", function (d) {
         dragging = true;
-        var angle = rotate(d3.event.x, d3.event.y, x0, y0)
-        var newX = x0 + lines.l1 * Math.sin(angle)
-        var newY = y0 + lines.l1 * Math.cos(angle)
+
+        var angle = Math.atan2(d3.event.x - x0, d3.event.y - y0)
+        Theta1 = angle
+
+        setAttributes()
 
         d3.select("#angle1").text('Angle 1: ' + Number.parseFloat(angle * 180 / Math.PI).toFixed(5))
-
-        Theta1 = angle
-        dTheta1 = 0
-        dTheta2 = 0
-        x1 = newX
-        y1 = newY
-        circle_1.attr("transform", function (d) { return 'translate(' + newX + ',' + newY + ')' })
-
-        line_1.attr('d', lineFunction([{ 'x': x0, 'y': y0 }, { 'x': newX, 'y': newY }]))
-        line_2.attr('d', lineFunction([{ 'x': newX, 'y': newY }, { 'x': x2, 'y': y2 }]))
-
-        x2 = x1 + lines.l2 * Math.sin(Theta2)
-        y2 = y1 + lines.l2 * Math.cos(Theta2)
-
-        circle_2.attr("transform", function (d) { return 'translate(' + x2 + ',' + y2 + ')' })
     })
     .on("end", function () {
         setAttributes()
-
     });
 var drag_Circle2 = d3.drag()
     .on("drag", function (d) {
         dragging = true;
-        var angle = rotate(d3.event.x, d3.event.y, x1, y1)
-        var newX = x1 + lines.l2 * Math.sin(angle)
-        var newY = y1 + lines.l2 * Math.cos(angle)
-
+        var angle = Math.atan2(d3.event.x - x1, d3.event.y - y1)
         d3.select("#angle2").text('Angle 2: ' + Number.parseFloat(angle * 180 / Math.PI).toFixed(5))
         Theta2 = angle
-        dTheta1 = 0
-        dTheta2 = 0
 
-        circle_2.attr("transform", function (d) { return 'translate(' + newX + ',' + newY + ')' })
-        line_2.attr('d', lineFunction([{ 'x': x1, 'y': y1 }, { 'x': newX, 'y': newY }]))
-
+        setAttributes()
     })
     .on("end", function () {
 
@@ -124,7 +99,6 @@ var drag_Circle2 = d3.drag()
 
 drag_Circle1(circle_1);
 drag_Circle2(circle_2);
-
 
 
 function getSlider(range, type, line, title) {
@@ -164,8 +138,6 @@ function getSlider(range, type, line, title) {
             else {
                 bobs[line] = d
             };
-            dTheta1 = 0;
-            dTheta2 = 0;
             setAttributes();
         })
         .style("cursor", "pointer")
@@ -187,8 +159,6 @@ function getSlider(range, type, line, title) {
                 else {
                     bobs[line] = x.invert(d3.event.x)
                 }
-                dTheta1 = 0;
-                dTheta2 = 0;
                 setAttributes();
             })
         )
@@ -211,8 +181,8 @@ d3.select('#sliders').node().appendChild(getSlider([10, 30], 'bobs', 'm2', 'Bob 
 
 function draw() {
 
-    d3.select("#angle1").text('Angle 1: ' + Number.parseFloat(rotate(x1, y1, 250, 250) * 180 / Math.PI).toFixed(5))
-    d3.select("#angle2").text('Angle 2: ' + Number.parseFloat(rotate(x2, y2, x1, y1) * 180 / Math.PI).toFixed(5))
+    d3.select("#angle1").text('Angle 1: ' + Number.parseFloat(Math.atan2(x1-x0, y1-y0) * 180 / Math.PI).toFixed(5))
+    d3.select("#angle2").text('Angle 2: ' + Number.parseFloat(Math.atan2(x2-x1, y2-y1)  * 180 / Math.PI).toFixed(5))
 
     d2Theta1 = (g * (Math.sin(Theta2) * Math.cos(Theta1 - Theta2) - mu * Math.sin(Theta1)) - (lines.l2 * dTheta2 * dTheta2 + lines.l1 * dTheta1 * dTheta1 * Math.cos(Theta1 - Theta2)) * Math.sin(Theta1 - Theta2)) / (lines.l1 * (mu - Math.cos(Theta1 - Theta2) * Math.cos(Theta1 - Theta2)));
     d2Theta2 = (mu * g * (Math.sin(Theta1) * Math.cos(Theta1 - Theta2) - Math.sin(Theta2)) + (mu * lines.l1 * dTheta1 * dTheta1 + lines.l2 * dTheta2 * dTheta2 * Math.cos(Theta1 - Theta2)) * Math.sin(Theta1 - Theta2)) / (lines.l2 * (mu - Math.cos(Theta1 - Theta2) * Math.cos(Theta1 - Theta2)));
@@ -236,7 +206,6 @@ function draw() {
         .data([{ 'x': x1, 'y': y1 }])
         .attr("transform", function (d) { return 'translate(' + d.x + ',' + d.y + ')' })
 
-
     circle_2
         .data([{ 'x': x2, 'y': y2 }])
         .attr("transform", function (d) { return 'translate(' + d.x + ',' + d.y + ')' })
@@ -248,11 +217,14 @@ function setAttributes() {
     y1 = y0 + lines.l1 * Math.cos(Theta1)
     x2 = x1 + lines.l2 * Math.sin(Theta2)
     y2 = y1 + lines.l2 * Math.cos(Theta2)
+    dTheta1 = 0;
+    dTheta2 = 0;
 
+    Theta1 = Math.atan2(x1 - x0, y1 - y0)
 
-    d3.select("#angle2").text('Angle 2: ' + rotate(x2, y2, x1, y1) * 180 / Math.PI)
+    d3.select("#angle2").text('Angle 2: ' + Math.atan2(x2-x1, y2-y1) * 180 / Math.PI)
 
-    d3.select('#line1')
+    line_1
         .attr('d', lineFunction([{ 'x': x0, 'y': y0 }, { 'x': x1, 'y': y1 }]))
 
     line_2
@@ -270,5 +242,4 @@ function setAttributes() {
     d3.select('#circle2').attr('r', bobs.m2)
 }
 
-//draw()
 setInterval(function () { if (!dragging) { draw() } }, 15);
