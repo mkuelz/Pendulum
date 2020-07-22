@@ -86,6 +86,7 @@ var drag_Circle1 = d3.drag()
 var drag_Circle2 = d3.drag()
     .on("drag", function (d) {
         dragging = true;
+        
         var angle = Math.atan2(d3.event.x - x1, d3.event.y - y1)
         d3.select("#angle2").text('Angle 2: ' + Number.parseFloat(angle * 180 / Math.PI).toFixed(5))
         Theta2 = angle
